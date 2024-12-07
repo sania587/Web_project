@@ -1,70 +1,103 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { login } from '../../redux/slices/authSlice';  // Import login action from authSlice
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../redux/slices/authSlice"; // Import login action from your redux slice
 
 const CustomerLogin = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Dispatch the login action with the user's email and password
-    dispatch(login({ email, password }));
+    try {
+      // Dispatch the login thunk with user credentials
+      const resultAction = await dispatch(login({ email, password }));
+
+      if (login.fulfilled.match(resultAction)) {
+        // Login was successful
+        alert("Login Successful!");
+        navigate("/dashboard");
+      } else {
+        // Handle login error
+        alert(resultAction.payload || "Login failed");
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
+      alert("An unexpected error occurred. Please try again.");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-md space-y-6 border border-orange-500 border-2">
-      <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Login to FitHum</h2>
-      
-      {/* Email Input */}
-      <div className="flex flex-col">
-        <label htmlFor="email" className="text-sm font-medium text-gray-600">Email Address</label>
-        <input
-          type="email"
-          id="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          required
-        />
-      </div>
+    <div className="w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+      <h2 className="text-3xl font-semibold text-center text-gray-700 mb-6">
+        Welcome Back!
+      </h2>
+      <p className="text-sm text-gray-600 text-center mb-6">
+        Enter your credentials to access your account.
+      </p>
 
-      {/* Password Input */}
-      <div className="flex flex-col">
-        <label htmlFor="password" className="text-sm font-medium text-gray-600">Password</label>
-        <input
-          type="password"
-          id="password"
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          required
-        />
-      </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Email Input */}
+        <div className="flex flex-col">
+          <label htmlFor="email" className="text-sm font-medium text-gray-600">
+            Email Address
+          </label>
+          <input
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </div>
 
-      {/* Submit Button */}
-      <div className="flex justify-center mt-6">
+        {/* Password Input */}
+        <div className="flex flex-col">
+          <label htmlFor="password" className="text-sm font-medium text-gray-600">
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </div>
+
+        {/* Submit Button */}
         <button
           type="submit"
-          className="w-full py-3 px-6 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           Login
         </button>
-      </div>
+      </form>
 
-      {/* Forgot Password Link */}
-      <div className="text-center mt-4">
-        <a href="/forgot-password" className="text-sm text-indigo-600 hover:text-indigo-700">
-          Forgot your password?
-        </a>
+      {/* Create Account and Forgot Password */}
+      <div className="text-sm text-center text-gray-600 mt-6">
+        Don’t have an account?{" "}
+        <button
+          onClick={() => navigate("/signup")}
+          className="text-indigo-600 font-semibold hover:underline"
+        >
+          Create New Account
+        </button>
+        <br />
+        <button
+          onClick={() => navigate("/forgot-password")}
+          className="text-indigo-600 font-semibold hover:underline mt-2"
+        >
+          Forgot Password?
+        </button>
       </div>
-
-      {/* Optionally, Add Social Login Button */}
-      {/* You can add social login buttons here if needed */}
-    </form>
+    </div>
   );
 };
 

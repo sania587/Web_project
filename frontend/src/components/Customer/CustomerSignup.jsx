@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { signup } from '../../redux/slices/authSlice';
+import { signup } from '../../redux/slices/authSlice';  // Assuming you have a signup action
+import { useNavigate } from 'react-router-dom';
 
 const CustomerSignup = () => {
-  const [currentPage, setCurrentPage] = useState(1);  // Track the current page
+  const [currentPage, setCurrentPage] = useState(1); // Track the current page
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,6 +18,7 @@ const CustomerSignup = () => {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();  // Use useNavigate for navigation
 
   const handleChange = (e) => {
     setFormData({
@@ -26,17 +28,46 @@ const CustomerSignup = () => {
   };
 
   const handleNext = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, 3));  // Move to next page (max 3 pages)
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, 3)); // Move to next page (max 3 pages)
   };
 
   const handlePrevious = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));  // Go back to previous page (min 1 page)
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1)); // Go back to previous page (min 1 page)
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Dispatch the signup action with all form data
-    dispatch(signup(formData));  // Send the complete form data to the backend
+  
+    try {
+      // Dispatch the signup action with all form data
+      const resultAction = await dispatch(signup(formData)); // Dispatch signup action
+  
+      // Check if the response contains a valid token
+      if (resultAction.payload && resultAction.payload.token) {
+        // Assuming signup returns a payload with a token
+        const { token } = resultAction.payload; // Extract token from payload
+  
+        // Store the token in localStorage (or sessionStorage)
+        localStorage.setItem('token', token);  // Save JWT token in localStorage
+  
+        // Show a success alert
+        alert('Signup successful! Redirecting to dashboard...');
+  
+        // Redirect to the customer dashboard after signup
+        navigate('/dashboard');
+      } else {
+        // If signup fails or token is not returned, show an error message
+        alert('Signup failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error during signup:', error);
+      alert('An error occurred during signup. Please try again.');
+    }
+  };
+  
+
+  const handleLoginRedirect = () => {
+    navigate('/login'); // Redirect to the CustomerLoginPage
   };
 
   return (
@@ -219,6 +250,19 @@ const CustomerSignup = () => {
           )}
         </div>
       </form>
+
+      {/* Redirect to login page */}
+      <div className="text-center mt-4">
+        <p className="text-sm text-gray-600">
+          Already have an account?{' '}
+          <button
+            onClick={handleLoginRedirect}
+            className="text-indigo-600 hover:underline"
+          >
+            Login here
+          </button>
+        </p>
+      </div>
     </div>
   );
 };

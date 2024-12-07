@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Define the User Schema
 const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -20,6 +21,17 @@ const UserSchema = new mongoose.Schema({
       rating: Number
     }
   ],
+  
+  // Additional fields for password reset functionality
+  resetToken: { 
+    type: String, 
+    default: null 
+  },
+  resetTokenExpiration: { 
+    type: Date, 
+    default: null 
+  },
 }, { timestamps: true });
 
+// Create and export the User model
 module.exports = mongoose.model('User', UserSchema);

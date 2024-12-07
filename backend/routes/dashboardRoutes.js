@@ -5,7 +5,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const authRoutes = require('./routes/authRoutes');
 
 // Initialize Express app
 const app = express();
@@ -27,10 +26,11 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Fitness Website API!');
 });
 
-// Add other routes for signup, login, etc.
-// Example: User route
-app.use('/api/users', require('./routes/userRoutes'));
-app.use('/api/auth', authRoutes);
+// Routes
+app.use('/api/users', require('./routes/userRoutes'));  // User routes
+app.use('/api/sessions', require('./routes/sessionRoutes'));  // Session routes
+app.use('/api/notifications', require('./routes/notificationRoutes'));  // Notification routes
+app.use('/api/dashboard', require('./routes/dashboardRoutes'));  // Dashboard routes
 
 // Start server
 const PORT = process.env.PORT || 5000;
