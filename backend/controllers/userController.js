@@ -1,6 +1,9 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const Admin = require('../models/Admin');  // Assuming Admin schema is defined
+const Trainer = require('../models/Trainer');  // Assuming Trainer schema is defined
+
 
 // Environment variables (e.g., JWT secret)
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
@@ -86,7 +89,8 @@ exports.signup = async (req, res) => {
 
 // @desc User login
 // @route POST /api/users/login
-// @access Public
+// @access Publi
+// Login function to handle role-based redirection
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -96,13 +100,21 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: 'All fields are required.' });
     }
 
-    // Check if the user exists
-    const user = await User.findOne({ email });
+    // Check if the user exists in Admin model
+    let user = await Admin.findOne({ email });
     if (!user) {
-      return res.status(404).json({ message: 'Invalid email or password.' });
+      // If not found in Admin, check in Trainer model
+      user = await Trainer.findOne({ email });
+      if (!user) {
+        // If not found in Trainer, check in User model (Customer)
+        user = await User.findOne({ email });
+        if (!user) {
+          return res.status(404).json({ message: 'Invalid email or password.' });
+        }
+      }
     }
 
-    // Check the password
+    // Check the password for the found user
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid email or password.' });
@@ -110,6 +122,16 @@ exports.login = async (req, res) => {
 
     // Generate a token
     const token = generateToken(user);
+
+    // Prepare the response based on the role
+    let dashboardUrl = '/dashboard';  // Default to generic dashboard
+    if (user.role === 'admin') {
+      dashboardUrl = '/admin/dashboard';  // Redirect to Admin Dashboard
+    } else if (user.role === 'trainer') {
+      dashboardUrl = '/trainer/dashboard';  // Redirect to Trainer Dashboard
+    } else if (user.role === 'customer') {
+      dashboardUrl = '/customer/dashboard';  // Redirect to Customer Dashboard
+    }
 
     res.status(200).json({
       message: 'Login successful.',
@@ -121,8 +143,10 @@ exports.login = async (req, res) => {
         profileDetails: user.profileDetails,  // Return profile details
       },
       token,
+      redirectUrl: dashboardUrl,  // Add the redirect URL based on the role
     });
   } catch (error) {
+    console.error('Error during login:', error);
     res.status(500).json({ message: 'Server error.', error: error.message });
   }
 };

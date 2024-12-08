@@ -6,7 +6,7 @@ import CustomerSignupPage from "./pages/Customer/CustomerSignupPage";
 import Dashboard from "./pages/Customer/dashboardPage";
 import "./index.css";
 import AskRole from "./pages/AskRole";
-import AdminSignup from "./pages/Admin/AdminSignup";
+import AdminSignup from "./pages/Admin/AdminSignupPage";
 import TrainerSignup from "./pages/Trainer/TrainerSignup";
 
 const App = () => {

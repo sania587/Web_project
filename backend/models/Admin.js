@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Define the User Schema
+// Define the Admin Schema
 const AdminSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -10,7 +10,7 @@ const AdminSchema = new mongoose.Schema({
     age: Number,
     gender: String
   },
-  notifications: [{ type: String }], // Notifications
+  notifications: [{ type: String }],
   feedback: [
     { 
       from: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -18,17 +18,9 @@ const AdminSchema = new mongoose.Schema({
       rating: Number
     }
   ],
-  
-  // Additional fields for password reset functionality
-  resetToken: { 
-    type: String, 
-    default: null 
-  },
-  resetTokenExpiration: { 
-    type: Date, 
-    default: null 
-  },
+  resetToken: { type: String, default: null },
+  resetTokenExpiration: { type: Date, default: null },
 }, { timestamps: true });
 
-// Create and export the User model
-module.exports = mongoose.model('User', UserSchema);
+// Create and export the Admin model
+module.exports = mongoose.model('Admin', AdminSchema);
