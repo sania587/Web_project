@@ -1,16 +1,14 @@
 const mongoose = require('mongoose');
 
 // Define the User Schema
-const UserSchema = new mongoose.Schema({
+const AdminSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: [ 'customer'], required: true },
+  role: { type: String, enum: ['admin'], required: true },
   profileDetails: {
     age: Number,
-    gender: String,
-    healthGoals: String // For customers
-   
+    gender: String
   },
   notifications: [{ type: String }], // Notifications
   feedback: [
