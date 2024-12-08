@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../redux/slices/authSlice"; // Import login action from your redux slice
+import { login } from "../redux/slices/authSlice"; // Import login action from your redux slice
 
-const CustomerLogin = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
@@ -83,12 +83,13 @@ const CustomerLogin = () => {
       {/* Create Account and Forgot Password */}
       <div className="text-sm text-center text-gray-600 mt-6">
         Don’t have an account?{" "}
-        <button
-          onClick={() => navigate("/signup")}
-          className="text-indigo-600 font-semibold hover:underline"
-        >
-          Create New Account
-        </button>
+        
+  <button
+    onClick={() => navigate("/ask-role")} // Redirect to AskRole page
+    className="text-indigo-600 font-semibold hover:underline"
+  >
+    Create New Account
+  </button>
         <br />
         <button
           onClick={() => navigate("/forgot-password")}
@@ -101,4 +102,4 @@ const CustomerLogin = () => {
   );
 };
 
-export default CustomerLogin;
+export default Login;

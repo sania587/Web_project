@@ -167,7 +167,9 @@ const Navbar = ({ isAuthenticated, handleLogout, userId }) => {
                 </Link>
               </li>
               <li>
-                <Link to="/signup" className="hover:text-green-400">
+                <Link to="/ask-role" className="hover:text-green-400">
+               
+               
                   Sign Up
                 </Link>
               </li>

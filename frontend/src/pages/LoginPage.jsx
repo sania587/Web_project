@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import CustomerLogin from '../../components/Customer/CustomerLogin';
+import Login from '../components/Login';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
-const CustomerLoginPage = () => {
+const LoginPage = () => {
   const navigate = useNavigate();
 
   const handleGoogleSignup = (response) => {
@@ -44,7 +44,7 @@ const CustomerLoginPage = () => {
           </div>
 
           {/* Login Form */}
-          <CustomerLogin />
+          <Login />
 
           {/* Forgot Password Link */}
           <div className="text-sm text-center text-gray-600 mt-6">
@@ -61,4 +61,4 @@ const CustomerLoginPage = () => {
   );
 };
 
-export default CustomerLoginPage;
+export default LoginPage;

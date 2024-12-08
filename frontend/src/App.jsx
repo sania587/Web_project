@@ -1,10 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Navbar from "./components/Customer/Navbar";
-import CustomerLoginPage from "./pages/Customer/CustomerLoginPage";
+import Navbar from "./components/Navbar";
+import LoginPage from "./pages/LoginPage";
 import CustomerSignupPage from "./pages/Customer/CustomerSignupPage";
 import Dashboard from "./pages/Customer/dashboardPage";
 import "./index.css";
+import AskRole from "./pages/AskRole";
+import AdminSignup from "./pages/Admin/AdminSignup";
+import TrainerSignup from "./pages/Trainer/TrainerSignup";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
@@ -17,10 +20,13 @@ const App = () => {
     <Router>
       <Navbar isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
       <Routes>
-        <Route path="/login" element={<CustomerLoginPage />} />
-        <Route path="/signup" element={<CustomerSignupPage />} />
+        <Route path="/login" element={<LoginPage />} />
+       
         <Route path="/dashboard" element={<Dashboard />} />
-  
+        <Route path="/ask-role" element={<AskRole />} />
+        <Route path="/signup/admin" element={<AdminSignup />} />
+        <Route path="/signup/trainer" element={<TrainerSignup />} />
+        <Route path="/signup/customer" element={<CustomerSignupPage />} />
         
         {/* Welcome Page (Root) */}
         <Route 
