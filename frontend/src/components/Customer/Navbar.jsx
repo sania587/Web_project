@@ -174,7 +174,7 @@ const Navbar = ({ isAuthenticated, handleLogout, userId }) => {
             </>
           )}
         </ul>
-
+       
         {/* Mobile Menu Icon */}
         <button
           className="md:hidden text-green-400 text-xl"

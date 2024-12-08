@@ -12,24 +12,23 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-<<<<<<< HEAD
+
     "dotenv": "^16.4.7",
-=======
+
     "cors": "^2.8.5",
     "dotenv": "^5.0.1",
->>>>>>> ce2da6eb61ecb902300395c85743fb6d1b27e5f7
+
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.4",
-<<<<<<< HEAD
+
     "moongose": "^1.0.0",
-    "nodemailer": "^6.9.16"
-=======
+    "nodemailer": "^6.9.16",
     "moongose": "^1.0.0"
   },
   "description": "",
   "devDependencies": {
     "nodemon": "^3.1.7"
->>>>>>> ce2da6eb61ecb902300395c85743fb6d1b27e5f7
+
   }
 }
