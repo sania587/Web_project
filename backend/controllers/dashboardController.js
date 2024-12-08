@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Progress = require('../models/Progress');
 
 exports.getAssignedPlans = async (req, res) => {
   try {
@@ -31,14 +32,21 @@ exports.getTrainers = async (req, res) => {
   }
 };
 
+
 exports.getProgressReports = async (req, res) => {
   try {
-    const userId = req.user.id;
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ message: 'User not found.' });
+    const userId = req.user.id;  // Assuming req.user.id contains the authenticated user's ID
+    
+    // Fetch progress reports for the user, and populate the user information (optional)
+    const progressReports = await Progress.find({ user: userId }).sort({ date: -1 });
 
-    res.status(200).json(user.progressReports); // Assuming progressReports is an array in the schema
+    if (!progressReports) {
+      return res.status(404).json({ message: 'No progress reports found for this user.' });
+    }
+
+    res.status(200).json(progressReports);  // Send the progress reports as the response
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+

@@ -34,4 +34,4 @@ const TainerSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Create and export the User model
-module.exports = mongoose.model('Tainer', TainerSchema);
+module.exports = mongoose.model('Trainer', TainerSchema);

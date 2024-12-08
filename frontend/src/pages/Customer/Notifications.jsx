@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // Make sure axios is installed
+import Navbar from '../../components/Navbar';
 
 const Notifications = ({ userId }) => {
   const [notifications, setNotifications] = useState([]);
@@ -25,6 +26,8 @@ const Notifications = ({ userId }) => {
   }
 
   return (
+    <>
+    <Navbar/>
     <div className="p-4 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold mb-4">Notifications</h2>
       {notifications.length === 0 ? (
@@ -39,6 +42,7 @@ const Notifications = ({ userId }) => {
         </ul>
       )}
     </div>
+    </>
   );
 };
 

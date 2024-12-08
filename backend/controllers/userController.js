@@ -20,6 +20,74 @@ const generateToken = (user) => {
 // @desc User signup
 // @route POST /api/users/signup
 // @access Public
+// exports.signup = async (req, res) => {
+//   try {
+//     const {
+//       name,
+//       email,
+//       password,
+//       role,
+//       age,
+//       gender,
+//       healthGoals,
+//       specializations,
+//       certifications,
+//     } = req.body;
+
+//     // Validate input
+//     if (!name || !email || !password || !role) {
+//       return res.status(400).json({ message: 'All fields are required.' });
+//     }
+
+//     // Check if the email is already registered
+//     const existingUser = await User.findOne({ email });
+//     if (existingUser) {
+//       return res.status(400).json({ message: 'Email is already in use.' });
+//     }
+
+//     // Hash the password
+//     const hashedPassword = await bcrypt.hash(password, 10);
+
+//     // Create the profileDetails object (this is the new part)
+//     const profileDetails = {
+//       age,
+//       gender,
+//       healthGoals,
+//       specializations,
+//       certifications,
+//     };
+
+//     // Create a new user
+//     const user = new User({
+//       name,
+//       email,
+//       password: hashedPassword,
+//       role,
+//       profileDetails,  // Add profileDetails to the user
+//     });
+
+//     await user.save();
+
+//     // Generate a token
+//     const token = generateToken(user);
+
+//     res.status(201).json({
+//       message: 'User registered successfully.',
+//       user: {
+//         id: user._id,
+//         name: user.name,
+//         email: user.email,
+//         role: user.role,
+//         profileDetails: user.profileDetails,  // Return profile details as well
+//       },
+//       token,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: 'Server error.', error: error.message });
+//   }
+// };
+
+
 exports.signup = async (req, res) => {
   try {
     const {
@@ -57,14 +125,35 @@ exports.signup = async (req, res) => {
       certifications,
     };
 
-    // Create a new user
-    const user = new User({
-      name,
-      email,
-      password: hashedPassword,
-      role,
-      profileDetails,  // Add profileDetails to the user
-    });
+    // Create the user based on the role
+    let user;
+
+    if (role === 'admin') {
+      user = new Admin({
+        name,
+        email,
+        password: hashedPassword,
+        role: 'admin',
+      });
+    } else if (role === 'trainer') {
+      user = new Trainer({
+        name,
+        email,
+        password: hashedPassword,
+        role: 'trainer',
+        profileDetails,  // Include profileDetails for Trainer
+      });
+    } else if (role === 'customer') {
+      user = new User({
+        name,
+        email,
+        password: hashedPassword,
+        role: 'customer',
+        profileDetails,  // Include profileDetails for Customer
+      });
+    } else {
+      return res.status(400).json({ message: 'Invalid role.' });
+    }
 
     await user.save();
 
@@ -72,13 +161,13 @@ exports.signup = async (req, res) => {
     const token = generateToken(user);
 
     res.status(201).json({
-      message: 'User registered successfully.',
+      message: `${role.charAt(0).toUpperCase() + role.slice(1)} registered successfully.`,
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
-        profileDetails: user.profileDetails,  // Return profile details as well
+        profileDetails: user.profileDetails,  // Return profile details
       },
       token,
     });
@@ -86,6 +175,7 @@ exports.signup = async (req, res) => {
     res.status(500).json({ message: 'Server error.', error: error.message });
   }
 };
+
 
 // @desc User login
 // @route POST /api/users/login

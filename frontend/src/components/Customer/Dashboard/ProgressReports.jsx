@@ -9,6 +9,7 @@ const ProgressReports = () => {
   useEffect(() => {
     const fetchProgressReports = async () => {
       try {
+        // Make sure the endpoint is correct
         const { data } = await axios.get('/api/dashboard/progress');
         
         // Ensure the data is an array before setting it
@@ -27,7 +28,7 @@ const ProgressReports = () => {
     };
 
     fetchProgressReports();
-  }, []);
+  }, []);  // Empty dependency array to fetch on component mount
 
   return (
     <div className="max-w-7xl mx-auto p-4">
@@ -43,7 +44,9 @@ const ProgressReports = () => {
             progressReports.map((report, index) => (
               <li key={index} className="bg-white border border-gray-300 rounded-lg shadow-lg p-6 hover:shadow-xl transition-all">
                 <p className="text-lg font-semibold text-gray-800"><strong>Date:</strong> {new Date(report.date).toLocaleDateString()}</p>
-                <p className="text-gray-600 mt-2"><strong>Details:</strong> {report.details}</p>
+                <p className="text-gray-600 mt-2"><strong>Details:</strong> {report.goals}</p>
+                <p className="text-gray-600 mt-2"><strong>Activities:</strong> {report.activities.join(', ')}</p>
+                <p className="text-gray-600 mt-2"><strong>Calories Burned:</strong> {report.metrics.caloriesBurned}</p>
               </li>
             ))
           ) : (

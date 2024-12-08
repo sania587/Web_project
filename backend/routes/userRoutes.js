@@ -1,12 +1,13 @@
+// userRoutes.js
 const express = require('express');
-const { signup, login } = require('../controllers/userController');
+const { signup, login } = require('../controllers/userController');  // Correct import for controller functions
 
 const router = express.Router();
 
-// Signup route
-router.post('/signup', signup);
+// Define login route
+router.post('/login', login);  // This should handle POST requests to /api/users/login
 
-// Login route
-router.post('/login', login);
+// Other routes, like signup, if needed
+router.post('/signup', signup);
 
 module.exports = router;

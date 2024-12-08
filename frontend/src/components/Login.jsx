@@ -9,16 +9,36 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     // Dispatch the login thunk with user credentials
+  //     const resultAction = await dispatch(login({ email, password }));
+
+  //     if (login.fulfilled.match(resultAction)) {
+  //       // Login was successful
+  //       alert("Login Successful!");
+  //       navigate("/dashboard");
+  //     } else {
+  //       // Handle login error
+  //       alert(resultAction.payload || "Login failed");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error logging in:", error);
+  //     alert("An unexpected error occurred. Please try again.");
+  //   }
+  // };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Dispatch the login thunk with user credentials
       const resultAction = await dispatch(login({ email, password }));
 
       if (login.fulfilled.match(resultAction)) {
         // Login was successful
         alert("Login Successful!");
-        navigate("/dashboard");
+        navigate("/dashboard"); // Navigate to the dashboard
       } else {
         // Handle login error
         alert(resultAction.payload || "Login failed");

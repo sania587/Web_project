@@ -7,7 +7,7 @@ const Navbar = ({ isAuthenticated, handleLogout, userId }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showSessions, setShowSessions] = useState(false);
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState([]); // Make sure it's initialized as an empty array
   const [sessions, setSessions] = useState([]);
   const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ const Navbar = ({ isAuthenticated, handleLogout, userId }) => {
     const fetchNotifications = async () => {
       try {
         const response = await axios.get(`/api/users/${userId}/notifications`);
-        setNotifications(response.data.notifications);
+        setNotifications(response.data.notifications || []); // Ensure it's always an array
       } catch (error) {
         console.error("Error fetching notifications:", error);
       }
@@ -25,7 +25,7 @@ const Navbar = ({ isAuthenticated, handleLogout, userId }) => {
     const fetchSessions = async () => {
       try {
         const response = await axios.get(`/api/sessions/user/${userId}`);
-        setSessions(response.data.sessions);
+        setSessions(response.data.sessions || []); // Ensure it's always an array
       } catch (error) {
         console.error("Error fetching sessions:", error);
       }
@@ -38,6 +38,9 @@ const Navbar = ({ isAuthenticated, handleLogout, userId }) => {
   }, [isAuthenticated, userId]);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const handleNotificationToggle = () => setShowNotifications(!showNotifications);
+  const handleSessionToggle = () => setShowSessions(!showSessions);
 
   return (
     <nav className="bg-gray-800 text-white shadow-lg">
@@ -56,33 +59,13 @@ const Navbar = ({ isAuthenticated, handleLogout, userId }) => {
           </li>
           {isAuthenticated && (
             <>
-              {/* Notifications Link */}
-              <li>
-                <Link
-                  to="/notifications"
-                  className="hover:text-green-400"
-                >
-                  Notifications
-                </Link>
-              </li>
-
-              {/* Sessions Link */}
-              <li>
-                <Link
-                  to="/sessions"
-                  className="hover:text-green-400"
-                >
-                  Sessions
-                </Link>
-              </li>
-
-              {/* Notifications Dropdown */}
+              {/* Notifications Dropdown (clickable) */}
               <div className="relative">
                 <button
-                  onClick={() => setShowNotifications(!showNotifications)}
                   className="hover:text-green-400"
+                  onClick={handleNotificationToggle}
                 >
-                  <span className="material-icons">notifications</span>
+                  Notifications
                 </button>
                 {showNotifications && (
                   <div className="absolute right-0 mt-2 w-64 p-4 bg-white rounded-md shadow-md">
@@ -102,13 +85,13 @@ const Navbar = ({ isAuthenticated, handleLogout, userId }) => {
                 )}
               </div>
 
-              {/* Sessions Dropdown */}
+              {/* Sessions Dropdown (clickable) */}
               <div className="relative">
                 <button
-                  onClick={() => setShowSessions(!showSessions)}
                   className="hover:text-green-400"
+                  onClick={handleSessionToggle}
                 >
-                  <span className="material-icons">event_note</span>
+                  Sessions
                 </button>
                 {showSessions && (
                   <div className="absolute right-0 mt-2 w-64 p-4 bg-white rounded-md shadow-md">
@@ -128,11 +111,11 @@ const Navbar = ({ isAuthenticated, handleLogout, userId }) => {
                               </div>
                               <span
                                 className={`inline-block px-3 py-1 text-sm rounded-md ${
-                                  session.status === 'approved'
-                                    ? 'bg-green-500 text-white'
-                                    : session.status === 'requested'
-                                    ? 'bg-yellow-500 text-white'
-                                    : 'bg-red-500 text-white'
+                                  session.status === "approved"
+                                    ? "bg-green-500 text-white"
+                                    : session.status === "requested"
+                                    ? "bg-yellow-500 text-white"
+                                    : "bg-red-500 text-white"
                                 }`}
                               >
                                 {session.status}
@@ -168,8 +151,6 @@ const Navbar = ({ isAuthenticated, handleLogout, userId }) => {
               </li>
               <li>
                 <Link to="/ask-role" className="hover:text-green-400">
-               
-               
                   Sign Up
                 </Link>
               </li>
