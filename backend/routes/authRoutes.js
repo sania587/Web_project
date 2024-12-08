@@ -6,8 +6,8 @@ const router = express.Router();
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'your-email@gmail.com',        // Your Gmail address
-    pass: 'your-app-password',           // Your app-specific password
+    user: 'rajataimoor1937@gmail.com',        
+    pass: 'fitPass123',          
   },
 });
 
@@ -20,10 +20,10 @@ router.post('/forgot-password', async (req, res) => {
 
   // Set up mail options
   const mailOptions = {
-    from: 'your-email@gmail.com',       // Your Gmail address
-    to: email,                          // Recipient email from the client
+    from: 'rajataimoor1937@gmail.com',     
+    to: email,                         
     subject: 'Password Reset OTP',
-    text: `Your OTP is: ${otp}`,        // OTP content
+    text: `Your OTP is: ${otp}`,      
   };
 
   try {

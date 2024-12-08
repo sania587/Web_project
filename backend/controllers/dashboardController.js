@@ -3,7 +3,7 @@ const Progress = require('../models/Progress');
 
 exports.getAssignedPlans = async (req, res) => {
   try {
-    const userId = req.user.id; // Assuming authenticated user
+    const userId = req.user.id; 
     const user = await User.findById(userId).populate('workoutPlan dietPlan'); // Populate related data
     if (!user) return res.status(404).json({ message: 'User not found.' });
 
@@ -35,9 +35,9 @@ exports.getTrainers = async (req, res) => {
 
 exports.getProgressReports = async (req, res) => {
   try {
-    const userId = req.user.id;  // Assuming req.user.id contains the authenticated user's ID
+    const userId = req.user.id; 
     
-    // Fetch progress reports for the user, and populate the user information (optional)
+ 
     const progressReports = await Progress.find({ user: userId }).sort({ date: -1 });
 
     if (!progressReports) {

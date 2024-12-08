@@ -6,6 +6,6 @@ const { signup } = require('../controllers/adminController');  // Correct import
 const router = express.Router();
 
 // Admin Signup route
-router.post('/signup', signup);  // This should now reference the 'signup' function from adminController.js
+router.post('/signup', signup);  
 
 module.exports = router;

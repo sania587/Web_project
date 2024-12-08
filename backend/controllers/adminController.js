@@ -65,4 +65,4 @@ const signup = async (req, res) => {
   }
 };
 
-module.exports = { signup };  // Ensure this is correct
+module.exports = { signup }; 
