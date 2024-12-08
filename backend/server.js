@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTop
 // Define routes
 app.use('/api/admin', adminRoutes);  // Admin routes
 app.use('/api/auth', authRoutes);  // Authentication routes
-app.use('/api/user',userRoutes);
+app.use('/api/users',userRoutes);
 app.get('/', (req, res) => {
   res.send('Welcome to the Fitness Website API!');
 });
