@@ -4,20 +4,20 @@ const nodemailer = require('nodemailer');
 exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
   try {
-    // Simulate OTP generation or fetching user by email (replace with actual logic)
+    // Simulate OTP generation or fetching user by email
     const otp = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit OTP
 
     // Send OTP via email (using Nodemailer)
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'your-email@gmail.com',    // Replace with your email
-        pass: 'your-app-password',       // Use App Password or regular password
+        user: 'rajataimoor1937@gmail.com',  
+        pass: 'fitPass123',      
       },
     });
 
     const mailOptions = {
-      from: 'your-email@gmail.com',
+      from: 'rajataimoor1937@gmail.com',
       to: email,
       subject: 'Password Reset OTP',
       text: `Your OTP is: ${otp}`,

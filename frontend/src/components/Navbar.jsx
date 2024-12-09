@@ -52,22 +52,24 @@ const Navbar = ({ isAuthenticated, handleLogout, userId, isAdmin }) => {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6">
-          <li>
-            <Link to="/dashboard" className="hover:text-green-400">
-              Dashboard
-            </Link>
-          </li>
-
-          {isAuthenticated && isAdmin && (
-            <li>
-              <Link to="/admin-dashboard" className="hover:text-green-400">
-                Admin Dashboard
-              </Link>
-            </li>
-          )}
 
           {isAuthenticated && (
             <>
+              <li>
+                <Link to="/dashboard" className="hover:text-green-400">
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link to="/profile" className="hover:text-green-400">
+                  Profile
+                </Link>
+              </li>
+              <li>
+                <Link to="/subscription" className="hover:text-green-400">
+                  Subscription
+                </Link>
+              </li>
               {/* Notifications Dropdown (clickable) */}
               <div className="relative">
                 <button
@@ -119,13 +121,12 @@ const Navbar = ({ isAuthenticated, handleLogout, userId, isAdmin }) => {
                                 </p>
                               </div>
                               <span
-                                className={`inline-block px-3 py-1 text-sm rounded-md ${
-                                  session.status === "approved"
+                                className={`inline-block px-3 py-1 text-sm rounded-md ${session.status === "approved"
                                     ? "bg-green-500 text-white"
                                     : session.status === "requested"
-                                    ? "bg-yellow-500 text-white"
-                                    : "bg-red-500 text-white"
-                                }`}
+                                      ? "bg-yellow-500 text-white"
+                                      : "bg-red-500 text-white"
+                                  }`}
                               >
                                 {session.status}
                               </span>
@@ -182,7 +183,11 @@ const Navbar = ({ isAuthenticated, handleLogout, userId, isAdmin }) => {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <ul className="md:hidden bg-gray-700 text-center py-4">
-          <li className="py-2">
+          
+
+          {isAuthenticated && (
+            <>
+            <li className="py-2">
             <Link to="/dashboard" className="hover:text-green-400">
               Dashboard
             </Link>
@@ -196,8 +201,11 @@ const Navbar = ({ isAuthenticated, handleLogout, userId, isAdmin }) => {
             </li>
           )}
 
-          {isAuthenticated && (
-            <>
+             <li>
+                <Link to="/profile" className="hover:text-green-400">
+                  Profile
+                </Link>
+              </li>
               <li className="py-2">
                 <Link to="/notifications" className="hover:text-green-400">
                   Notifications

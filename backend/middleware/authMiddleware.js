@@ -11,10 +11,10 @@ const protect = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded; // Attach decoded payload to the request object
+    req.user = decoded; 
     next();
   } catch (error) {
-    console.error(`JWT Error: ${error.message}`); // Log the error for debugging
+    console.error(`JWT Error: ${error.message}`);
     return res.status(401).json({ message: 'Invalid token.' });
   }
 };
@@ -29,7 +29,7 @@ const protectRole = (requiredRoles) => (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded; // Attach decoded payload to the request object
+    req.user = decoded; 
 
     if (!requiredRoles.includes(decoded.role)) {
       return res.status(403).json({ message: 'Access denied. Insufficient permissions.' });
@@ -37,7 +37,7 @@ const protectRole = (requiredRoles) => (req, res, next) => {
 
     next();
   } catch (error) {
-    console.error(`JWT Error: ${error.message}`); // Log the error for debugging
+    console.error(`JWT Error: ${error.message}`); 
     return res.status(401).json({ message: 'Invalid token.' });
   }
 };

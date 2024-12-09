@@ -17,77 +17,6 @@ const generateToken = (user) => {
   );
 };
 
-// @desc User signup
-// @route POST /api/users/signup
-// @access Public
-// exports.signup = async (req, res) => {
-//   try {
-//     const {
-//       name,
-//       email,
-//       password,
-//       role,
-//       age,
-//       gender,
-//       healthGoals,
-//       specializations,
-//       certifications,
-//     } = req.body;
-
-//     // Validate input
-//     if (!name || !email || !password || !role) {
-//       return res.status(400).json({ message: 'All fields are required.' });
-//     }
-
-//     // Check if the email is already registered
-//     const existingUser = await User.findOne({ email });
-//     if (existingUser) {
-//       return res.status(400).json({ message: 'Email is already in use.' });
-//     }
-
-//     // Hash the password
-//     const hashedPassword = await bcrypt.hash(password, 10);
-
-//     // Create the profileDetails object (this is the new part)
-//     const profileDetails = {
-//       age,
-//       gender,
-//       healthGoals,
-//       specializations,
-//       certifications,
-//     };
-
-//     // Create a new user
-//     const user = new User({
-//       name,
-//       email,
-//       password: hashedPassword,
-//       role,
-//       profileDetails,  // Add profileDetails to the user
-//     });
-
-//     await user.save();
-
-//     // Generate a token
-//     const token = generateToken(user);
-
-//     res.status(201).json({
-//       message: 'User registered successfully.',
-//       user: {
-//         id: user._id,
-//         name: user.name,
-//         email: user.email,
-//         role: user.role,
-//         profileDetails: user.profileDetails,  // Return profile details as well
-//       },
-//       token,
-//     });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Server error.', error: error.message });
-//   }
-// };
-
-
 exports.signup = async (req, res) => {
   try {
     const {
@@ -237,6 +166,75 @@ exports.login = async (req, res) => {
     });
   } catch (error) {
     console.error('Error during login:', error);
+    res.status(500).json({ message: 'Server error.', error: error.message });
+  }
+};
+
+// @desc Create a new payment
+// @route POST /api/users/payment
+// @access Private
+exports.createPayment = async (req, res) => {
+  try {
+    const { userId, amount, paymentMethod, transactionId, status, type } = req.body;
+
+    // Validate input
+    if (!userId || !amount || !paymentMethod || !transactionId || !status || !type) {
+      return res.status(400).json({ message: 'All fields are required.' });
+    }
+
+    // Create a new payment
+    const payment = new Payment({
+      userId,
+      amount,
+      paymentMethod,
+      transactionId,
+      status,
+      type,
+    });
+
+    await payment.save();
+
+    res.status(201).json({
+      message: 'Payment created successfully.',
+      payment: {
+        id: payment._id,
+        userId: payment.userId,
+        amount: payment.amount,
+        paymentMethod: payment.paymentMethod,
+        transactionId: payment.transactionId,
+        status: payment.status,
+        type: payment.type,
+        createdAt: payment.createdAt,
+        updatedAt: payment.updatedAt,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error.', error: error.message });
+  }
+};
+
+// @desc Get user subscription details
+// @route GET /api/users/subscription
+// @access Public
+exports.getSubscriptionDetails = async (req, res) => {
+  try {
+    const { userId } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is required.' });
+    }
+
+    const user = await User.findById(userId).populate('subscription');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    res.status(200).json({
+      message: 'Subscription details fetched successfully.',
+      subscription: user.subscription,
+    });
+  } catch (error) {
     res.status(500).json({ message: 'Server error.', error: error.message });
   }
 };
