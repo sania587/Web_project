@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"; 
 import { Link, useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 import axios from "axios"; // Make sure axios is installed
 
-const Navbar = ({ isAuthenticated, handleLogout, userId }) => {
+const Navbar = ({ isAuthenticated, handleLogout, userId, isAdmin }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showSessions, setShowSessions] = useState(false);
@@ -57,6 +57,15 @@ const Navbar = ({ isAuthenticated, handleLogout, userId }) => {
               Dashboard
             </Link>
           </li>
+
+          {isAuthenticated && isAdmin && (
+            <li>
+              <Link to="/admin-dashboard" className="hover:text-green-400">
+                Admin Dashboard
+              </Link>
+            </li>
+          )}
+
           {isAuthenticated && (
             <>
               {/* Notifications Dropdown (clickable) */}
@@ -130,18 +139,21 @@ const Navbar = ({ isAuthenticated, handleLogout, userId }) => {
               </div>
             </>
           )}
+
           {isAuthenticated ? (
-            <li>
-              <button
-                onClick={() => {
-                  handleLogout();
-                  navigate("/login");
-                }}
-                className="hover:text-red-400"
-              >
-                Logout
-              </button>
-            </li>
+            <>
+              <li>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    navigate("/login");
+                  }}
+                  className="hover:text-red-400"
+                >
+                  Logout
+                </button>
+              </li>
+            </>
           ) : (
             <>
               <li>
@@ -175,6 +187,15 @@ const Navbar = ({ isAuthenticated, handleLogout, userId }) => {
               Dashboard
             </Link>
           </li>
+
+          {isAuthenticated && isAdmin && (
+            <li className="py-2">
+              <Link to="/admin-dashboard" className="hover:text-green-400">
+                Admin Dashboard
+              </Link>
+            </li>
+          )}
+
           {isAuthenticated && (
             <>
               <li className="py-2">
@@ -189,6 +210,7 @@ const Navbar = ({ isAuthenticated, handleLogout, userId }) => {
               </li>
             </>
           )}
+
           {isAuthenticated ? (
             <li className="py-2">
               <button

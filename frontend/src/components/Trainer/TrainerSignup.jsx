@@ -21,7 +21,7 @@ const TrainerSignup = () => {
 
     try {
       // Send POST request to backend API for trainer signup
-      const response = await axios.post("http://localhost:5000/api/users/signup", formData);
+      const response = await axios.post("http://localhost:5000/api/trainer/signup", formData);
 
       // Handle successful response
       console.log("Trainer Signup Successful:", response.data);

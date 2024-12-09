@@ -38,7 +38,7 @@ const Login = () => {
       if (login.fulfilled.match(resultAction)) {
         // Login was successful
         alert("Login Successful!");
-        navigate("/dashboard"); // Navigate to the dashboard
+        navigate("/AdminDashboard"); // Navigate to the dashboard
       } else {
         // Handle login error
         alert(resultAction.payload || "Login failed");

@@ -214,13 +214,13 @@ exports.login = async (req, res) => {
     const token = generateToken(user);
 
     // Prepare the response based on the role
-    let dashboardUrl = '/dashboard';  // Default to generic dashboard
+    let dashboardUrl = '/AdminDashboard';  // Default to generic dashboard
     if (user.role === 'admin') {
-      dashboardUrl = '/admin/dashboard';  // Redirect to Admin Dashboard
+      dashboardUrl = '/AdminDashboard';  // Redirect to Admin Dashboard
     } else if (user.role === 'trainer') {
       dashboardUrl = '/trainer/dashboard';  // Redirect to Trainer Dashboard
     } else if (user.role === 'customer') {
-      dashboardUrl = '/customer/dashboard';  // Redirect to Customer Dashboard
+      dashboardUrl = '/dashboard';  // Redirect to Customer Dashboard
     }
 
     res.status(200).json({

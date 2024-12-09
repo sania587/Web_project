@@ -67,7 +67,7 @@ const AdminSignup = () => {
         const { token } = response.data;
         localStorage.setItem("token", token); // Store JWT in localStorage
         alert("Signup successful! Redirecting to dashboard...");
-        navigate("/dashboard");
+        navigate("/AdminDashboard");
       } else {
         alert("Signup failed. Please try again.");
       }

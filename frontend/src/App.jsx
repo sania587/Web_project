@@ -7,10 +7,16 @@ import LoginPage from "./pages/LoginPage";
 import CustomerSignupPage from "./pages/Customer/CustomerSignupPage";
 import Dashboard from "./pages/Customer/dashboardPage";
 import "./index.css";
+import FeedbackComponent from './components/Admin/FeedbackComponent';
+import PaymentPage from './pages/Admin/PaymentPage';
+import ReportPage from './pages/Admin/reportPage';
 import AskRole from "./pages/AskRole";
 import AdminSignup from "./pages/Admin/AdminSignupPage";
 import TrainerSignup from "./pages/Trainer/TrainerSignup";
-
+import ManageCustomersPage from './pages/Admin/ManageCustomersPage';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import ManageTrainers from './pages/Admin/ManageTrainersPage';
+import SubscriptionComponent from "./components/Admin/SubscriptionComponent";
 const App = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -23,12 +29,19 @@ const App = () => {
     <Router>
       <Navbar isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
       <Routes>
+      <Route path="/feedback" element={<FeedbackComponent />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/ask-role" element={<AskRole />} />
         <Route path="/signup/admin" element={<AdminSignup />} />
         <Route path="/signup/trainer" element={<TrainerSignup />} />
         <Route path="/signup/customer" element={<CustomerSignupPage />} />
+        <Route path="/AdminDashboard" element={<AdminDashboard />} />
+        <Route path="/manageTrainers" element={<ManageTrainers />} />
+        <Route path="/manageusers" element={<ManageCustomersPage />} />
+        <Route path="/reports" element={<ReportPage />} />
+        <Route path="/payment" element={<PaymentPage />} /> {/* Corrected this line */}
+        <Route path="/manage-subscriptions" element={<SubscriptionComponent />} />
         <Route 
           path="/" 
           element={
